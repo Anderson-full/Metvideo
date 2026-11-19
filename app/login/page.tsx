@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, Mail, ArrowRight, Shield, Loader2 } from "lucide-react";
+import { Lock, Mail, ArrowRight, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -52,7 +52,7 @@ export default function LoginPage() {
 
   return (
     <div className="relative min-h-[100dvh] w-full flex flex-col justify-between bg-black text-white overflow-hidden">
-      {/* VÍDEO DE FUNDO EM TELA CHEIA (Funciona no PC e no Celular) */}
+      {/* VÍDEO DE FUNDO EM TELA CHEIA */}
       <video
         autoPlay
         loop
@@ -61,29 +61,25 @@ export default function LoginPage() {
         poster="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2000&auto=format&fit=crop"
         className="absolute inset-0 w-full h-full object-cover opacity-45 scale-105 pointer-events-none"
       >
-        {/* Para usar o SEU vídeo: coloque o arquivo na pasta /public/video-fundo.mp4 e troque o src abaixo para "/video-fundo.mp4" */}
         <source src="/video-fundo.mp4" type="video/mp4" />
       </video>
 
-      {/* Camadas escuras para dar contraste e profundidade cinematográfica */}
+      {/* Camadas escuras para contraste */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/95 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-black/80 pointer-events-none" />
 
-      {/* CABEÇALHO (Visível no PC e no Celular) */}
-      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 pt-8 pb-4 flex items-center justify-between">
-        <div>
-          <span className="text-[10px] uppercase tracking-[0.28em] text-luxury-gold font-bold block">
-            Mentoria
-          </span>
-          <span className="font-serif-editorial text-xl sm:text-2xl font-bold tracking-tight text-white">
-            Comunique com Autoridade<span className="text-luxury-gold">.</span>
-          </span>
-        </div>
+      {/* CABEÇALHO COM A LOGO CENTRALIZADA E MAIOR */}
+      <header className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 pt-10 pb-2 flex items-center justify-center">
+        <img
+          src="/logo.png"
+          alt="Mentoria Comunique com Autoridade"
+          className="h-20 sm:h-28 w-auto object-contain drop-shadow-[0_0_25px_rgba(255,255,255,0.12)]"
+        />
       </header>
 
       {/* CONTEÚDO CENTRAL */}
       <main className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 py-8 my-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-        {/* Texto de Destaque (Esquerda no PC, Compacto no topo do Celular) */}
+        {/* Texto de Destaque */}
         <div className="lg:col-span-7 space-y-4 text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md">
             <span className="w-1.5 h-1.5 rounded-full bg-luxury-gold" />
@@ -102,7 +98,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Card de Login (Direita no PC, Largura total no Celular) */}
+        {/* Card de Login */}
         <div className="lg:col-span-5 w-full max-w-md mx-auto lg:ml-auto lg:mr-0">
           <div className="surface-card p-6 sm:p-9 rounded-2xl shadow-2xl">
             <div className="mb-6">
@@ -170,20 +166,6 @@ export default function LoginPage() {
                 )}
               </button>
             </form>
-
-            <div className="mt-6 pt-5 border-t border-white/10">
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail("admin@mentoria.com");
-                  setPassword("admin");
-                  setError("");
-                }}
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-medium text-white/80 hover:text-white transition-colors cursor-pointer"
-              >
-                <Shield size={14} className="text-luxury-gold" /> Preencher Acesso Admin
-              </button>
-            </div>
           </div>
         </div>
       </main>

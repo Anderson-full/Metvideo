@@ -66,15 +66,11 @@ export default function DashboardLayout({
         <div className="max-w-7xl mx-auto px-5 sm:px-10 h-20 flex items-center justify-between gap-4">
           {/* Assinatura Minimalista da Marca */}
           <Link href="/dashboard" className="flex items-center gap-3 shrink-0 group">
-            <div className="w-2.5 h-8 rounded-full bg-gradient-to-b from-[#FF2E38] to-[#7A040A] shadow-[0_0_15px_rgba(229,9,20,0.6)]" />
-            <div className="flex flex-col leading-none">
-              <span className="text-[9px] uppercase tracking-[0.32em] text-white/45 font-semibold mb-1">
-                Mentoria
-              </span>
-              <span className="font-serif-editorial text-sm sm:text-base font-bold text-white tracking-tight">
-                Comunique com Autoridade<span className="text-luxury-gold">.</span>
-              </span>
-            </div>
+            <img
+    src="/logo.png"
+    alt="Mentoria Comunique com Autoridade"
+    className="h-20 sm:h-22 w-auto object-contain"
+  />
           </Link>
 
           {/* Cápsula Flutuante de Navegação (Desktop) */}
