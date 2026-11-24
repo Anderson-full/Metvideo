@@ -16,6 +16,7 @@ import {
   Circle,
   Award,
   ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -97,6 +98,9 @@ export default function DashboardStreaming() {
       setSavingProgress(false);
     }
   };
+
+  const isZoomLink = (url?: string) =>
+    Boolean(url && url.toLowerCase().includes("zoom.us"));
 
   const isAdmin = user?.role === "ADMIN";
   const firstName = user?.name ? user.name.split(" ")[0] : "Membro";
@@ -455,6 +459,7 @@ export default function DashboardStreaming() {
                       <div className="pt-3.5 pb-1 px-1">
                         <span className="text-[10px] uppercase tracking-widest text-luxury-gold font-bold">
                           Aula {video.number}
+                          {isZoomLink(video.videoUrl) && " • Zoom"}
                         </span>
                         <h4 className="text-base font-bold text-white group-hover:text-luxury-gold transition-colors mt-0.5">
                           {video.title}
@@ -501,16 +506,42 @@ export default function DashboardStreaming() {
                 </button>
               </div>
               <div className="p-4 sm:p-6">
-                <div className="w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
-                  <video
-                    src={activeVideo.videoUrl}
-                    poster={activeVideo.thumbnail}
-                    controls
-                    autoPlay
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center">
+                  {isZoomLink(activeVideo.videoUrl) ? (
+                    <>
+                      {activeVideo.thumbnail && (
+                        <img
+                          src={activeVideo.thumbnail}
+                          alt={activeVideo.title}
+                          className="w-full h-full object-cover opacity-40"
+                        />
+                      )}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-black/50">
+                        <p className="text-sm sm:text-base text-white/85 mb-5 max-w-md">
+                          Esta aula está hospedada no Zoom. Clique no botão abaixo para assistir à gravação.
+                        </p>
+                        <a
+                          href={activeVideo.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-luxury-gold hover:bg-luxury-goldLight text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-lg"
+                        >
+                          Assistir Gravação no Zoom <ExternalLink size={15} />
+                        </a>
+                      </div>
+                    </>
+                  ) : (
+                    <video
+                      src={activeVideo.videoUrl}
+                      poster={activeVideo.thumbnail}
+                      controls
+                      autoPlay
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
+
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
                   <button
                     onClick={() => toggleVideoCompleted(activeVideo.id)}
