@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
-    const cleanEmail = email.toLowerCase();
+    const cleanEmail = email.trim().toLowerCase();
 
     // Acesso mestre do Administrador
     if (cleanEmail === "admin@mentoria.com" && password === "admin") {
@@ -24,7 +24,10 @@ export async function POST(request: Request) {
     });
 
     if (!user) {
-      return NextResponse.json({ error: "E-mail não encontrado no sistema." }, { status: 404 });
+      return NextResponse.json(
+        { error: "E-mail não encontrado no sistema." },
+        { status: 404 }
+      );
     }
 
     // Se o aluno foi cadastrado mas ainda não definiu senha
@@ -40,7 +43,11 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(user);
-  } catch (error) {
-    return NextResponse.json({ error: "Erro interno ao fazer login." }, { status: 500 });
+  } catch (error: any) {
+    console.error("Erro no login:", error);
+    return NextResponse.json(
+      { error: `Erro interno: ${error?.message || String(error)}` },
+      { status: 500 }
+    );
   }
 }
