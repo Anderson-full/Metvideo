@@ -72,7 +72,10 @@ export default function ConteudoPage() {
       method: "POST",
       body: formData,
     });
-    if (!res.ok) throw new Error("Erro ao fazer upload do arquivo.");
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || "Erro ao fazer upload do arquivo.");
+    }
     const data = await res.json();
     return data.url;
   };
@@ -163,7 +166,10 @@ export default function ConteudoPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Erro ao criar módulo.");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Erro ao criar módulo.");
+      }
 
       setModuleTitle("");
       setModuleCoverFile(null);
@@ -195,7 +201,10 @@ export default function ConteudoPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Erro ao agendar live.");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Erro ao agendar live.");
+      }
 
       setLiveTitle("");
       setLiveDate("");
