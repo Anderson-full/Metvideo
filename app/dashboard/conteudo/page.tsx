@@ -29,6 +29,7 @@ export default function ConteudoPage() {
   const [selectedModuleId, setSelectedModuleId] = useState("");
   const [lessonTitle, setLessonTitle] = useState("");
   const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string>("");
   const [videoSource, setVideoSource] = useState<"upload" | "zoom">("upload");
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [zoomUrl, setZoomUrl] = useState("");
@@ -37,6 +38,7 @@ export default function ConteudoPage() {
   const [moduleTitle, setModuleTitle] = useState("");
   const [moduleTurma, setModuleTurma] = useState("T3");
   const [moduleCoverFile, setModuleCoverFile] = useState<File | null>(null);
+  const [moduleCoverPreview, setModuleCoverPreview] = useState<string>("");
 
   // Estados: Agendar Live
   const [liveTitle, setLiveTitle] = useState("");
@@ -128,6 +130,7 @@ export default function ConteudoPage() {
 
       setLessonTitle("");
       setCoverFile(null);
+      setCoverPreview("");
       setVideoFile(null);
       setZoomUrl("");
       setFeedback("Aula publicada com sucesso!");
@@ -164,6 +167,7 @@ export default function ConteudoPage() {
 
       setModuleTitle("");
       setModuleCoverFile(null);
+      setModuleCoverPreview("");
       setFeedback("Módulo criado com sucesso!");
       await fetchModules();
     } catch (err: any) {
@@ -319,18 +323,32 @@ export default function ConteudoPage() {
             <label className="block text-xs font-medium text-white/70 mb-1.5">
               Foto da Capa
             </label>
-            <label className="flex flex-col items-center justify-center w-full h-32 border border-dashed border-white/15 rounded-xl bg-[#0A0A0A] hover:border-luxury-gold/60 transition-colors cursor-pointer">
-              <ImageIcon className="w-6 h-6 text-luxury-gold mb-2" />
-              <span className="text-xs text-white/80 font-medium">
-                {coverFile ? coverFile.name : "Clique para escolher a foto da capa"}
-              </span>
-              <span className="text-[11px] text-white/40 mt-1">
-                PNG, JPG ou WEBP
-              </span>
+            <label className="relative flex flex-col items-center justify-center w-full h-40 border border-dashed border-white/15 rounded-xl bg-[#0A0A0A] hover:border-luxury-gold/60 transition-colors cursor-pointer overflow-hidden">
+              {coverPreview ? (
+                <img
+                  src={coverPreview}
+                  alt="Prévia da capa"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <>
+                  <ImageIcon className="w-6 h-6 text-luxury-gold mb-2" />
+                  <span className="text-xs text-white/80 font-medium">
+                    Clique para escolher a foto da capa
+                  </span>
+                  <span className="text-[11px] text-white/40 mt-1">
+                    PNG, JPG ou WEBP
+                  </span>
+                </>
+              )}
               <input
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
-                onChange={(e) => setCoverFile(e.target.files?.[0] || null)}
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null;
+                  setCoverFile(file);
+                  setCoverPreview(file ? URL.createObjectURL(file) : "");
+                }}
                 className="hidden"
               />
             </label>
@@ -457,12 +475,35 @@ export default function ConteudoPage() {
             <label className="block text-xs font-medium text-white/70 mb-1.5">
               Capa do Módulo (opcional)
             </label>
-            <input
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(e) => setModuleCoverFile(e.target.files?.[0] || null)}
-              className="w-full bg-[#0A0A0A] border border-white/15 rounded-xl p-3 text-xs text-white"
-            />
+            <label className="relative flex flex-col items-center justify-center w-full h-40 border border-dashed border-white/15 rounded-xl bg-[#0A0A0A] hover:border-luxury-gold/60 transition-colors cursor-pointer overflow-hidden">
+              {moduleCoverPreview ? (
+                <img
+                  src={moduleCoverPreview}
+                  alt="Prévia da capa do módulo"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <>
+                  <ImageIcon className="w-6 h-6 text-luxury-gold mb-2" />
+                  <span className="text-xs text-white/80 font-medium">
+                    Clique para escolher a capa do módulo
+                  </span>
+                  <span className="text-[11px] text-white/40 mt-1">
+                    PNG, JPG ou WEBP
+                  </span>
+                </>
+              )}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] || null;
+                  setModuleCoverFile(file);
+                  setModuleCoverPreview(file ? URL.createObjectURL(file) : "");
+                }}
+                className="hidden"
+              />
+            </label>
           </div>
 
           <button

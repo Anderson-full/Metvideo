@@ -1,7 +1,5 @@
 // app/api/upload/route.ts
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 
 export async function POST(request: Request) {
   try {
@@ -9,24 +7,24 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "Nenhum arquivo enviado." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Nenhum arquivo enviado." },
+        { status: 400 }
+      );
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const mimeType = file.type || "image/jpeg";
+    const base64 = buffer.toString("base64");
+    const dataUrl = `data:${mimeType};base64,${base64}`;
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-
-    const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const filename = `${Date.now()}-${cleanName}`;
-    const filepath = path.join(uploadDir, filename);
-
-    await writeFile(filepath, buffer);
-
-    return NextResponse.json({ url: `/uploads/${filename}` });
-  } catch (error) {
+    return NextResponse.json({ url: dataUrl });
+  } catch (error: any) {
     console.error("Erro no upload:", error);
-    return NextResponse.json({ error: "Erro ao salvar arquivo." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao processar arquivo." },
+      { status: 500 }
+    );
   }
 }
